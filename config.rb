@@ -20,8 +20,12 @@ set :database, ENV['DATABASE_URL'] || "postgres://localhost/eloyendionnetrouwen_
 set :root, File.expand_path('../', __FILE__)
 
 require 'logger'
-LOGGER = Logger.new(File.join(app.root, 'log', "#{app.environment}.log"))
-ActiveRecord::Base.logger = LOGGER unless app.environment == :production
+if app.environment == :production
+  LOGGER = Logger.new(STDOUT)
+else
+  LOGGER = Logger.new(File.join(app.root, 'log', "#{app.environment}.log"))
+end
+ActiveRecord::Base.logger = LOGGER
 
 FROM_EMAIL = 'info@eloyendionnetrouwen.nl'
 SMTP_HELO = 'eloyendionnetrouwen.nl'

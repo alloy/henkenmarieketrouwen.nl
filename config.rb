@@ -1,15 +1,23 @@
 require 'rubygems'
 require 'sinatra'
-
-gem 'activerecord', '>= 3.0.7'
 require 'sinatra/activerecord'
+require 'pg'
 
-#set :environment, :production
+require 'i18n'
+I18n.enforce_available_locales = false
+
+case ENV['RACK_ENV']
+when 'test'
+  set :environment, :test
+when 'production'
+  set :environment, :production
+else
+  set :environment, :development
+end
 
 app = Sinatra::Application
-set :database, "sqlite://#{app.environment}.db"
+set :database, ENV['DATABASE_URL'] || "postgres://localhost/eloyendionnetrouwen_#{app.environment}"
 set :root, File.expand_path('../', __FILE__)
-#set :database, "mysql://localhost/eloyendionnetrouwen-#{app.environment}"
 
 require 'logger'
 LOGGER = Logger.new(File.join(app.root, 'log', "#{app.environment}.log"))

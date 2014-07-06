@@ -48,17 +48,26 @@
                   <br/>
 
                   <h3>Waar <%= address 'ben je', 'zijn jullie' %> bij aanwezig?</h3>
+                  <span class="small">Vink geen opties aan indien <%= address 'je niet kunt', 'jullie niet kunnen' %>.</span>
 
-                  <%= checkbox :attending_wedding, 'Bij de bruiloft in de Stopera om 13:30.' %>
+                  <h4>Op TODO-DATE</h2>
+                  <% if @invitation.all_festivities? %>
+                    <%= checkbox :attending_wedding, 'Bij de bruiloft in de Ruigoord kerk om 00:00.' %>
+                    <br/>
+                    <div id="dinner">
+                      <%= checkbox :attending_dinner, 'Bij het diner in Ruigoord om 00:00.' %>
+                      <label>Met <%= textfield :vegetarians, "width:16px;" %> vegetariërs.</label>
+                    </div>
+                  <% end %>
+                  <%= checkbox :attending_party_on_day_1, 'Bij het feest in Ruigoord vanaf 00:00.' %>
                   <br/>
-                  <%= checkbox :attending_party, 'Bij het feest in het Flevopark vanaf 15:00.' %>
-                  <br/>
-
-                  <div id="dinner">
-                    <%= checkbox :attending_dinner, 'Ook bij het eten (BBQ) om 18:00.' %>
+                  <h4>Op TODO-DATE+1</h2>
+                  <div id="brunch">
+                    <%= checkbox :attending_brunch, 'Bij de brunch in Ruigoord om 00:00.' %>
                     <label>Met <%= textfield :vegetarians, "width:16px;" %> vegetariërs.</label>
                   </div>
-                  <span class="small">Vink geen opties aan indien <%= address 'je niet kunt', 'jullie niet kunnen' %>.</span>
+                  <%= checkbox :attending_party_on_day_1, 'Bij het feest in Ruigoord vanaf 00:00.' %>
+                  <br/>
                   <br/>
 
                   <p>Zodra er meer informatie beschikbaar is, zoals foto’s, dan laten we het weten via email.</p>
@@ -66,7 +75,6 @@
                     Email adres:<br/>
                     <%= textfield :email, "width:30%;" %>
                   </label>
-                  <br/>
                   <br/>
 
                   <label>

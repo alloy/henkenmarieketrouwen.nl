@@ -44,11 +44,11 @@ namespace :db do
 
   namespace :seed do
     [:development, :production].each do |env|
-      task env => ["db:recreate:#{env}", :restart] do
+      task env do
         require 'app'
         tokens = []
-        tokens << Invitation.create(:attendees => 'Bassie, Adriaan', :email => 'bassie@example.org').token
-        tokens << Invitation.create(:attendees => 'Rini, Sander, Mats, Mila, Nena, Jacky, Yuka', :email => 'rini@example.org').token
+        tokens << Invitation.create(:attendees => 'Bassie, Adriaan', :email => 'bassie@example.org', :all_festivities => true).token
+        tokens << Invitation.create(:attendees => 'Rini, Sander, Mats, Mila, Nena, Jacky, Yuka', :email => 'rini@example.org', :all_festivities => false).token
         puts
         puts "Start by using either of these URLs:"
         tokens.each do |token|

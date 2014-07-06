@@ -15,8 +15,11 @@ else
   set :environment, :development
 end
 
+HOSTNAME = 'henkenmarieketrouwen'
+DOMAIN = "#{HOSTNAME}.nl"
+
 app = Sinatra::Application
-set :database, ENV['DATABASE_URL'] || "postgres://localhost/eloyendionnetrouwen_#{app.environment}"
+set :database, ENV['DATABASE_URL'] || "postgres://localhost/#{HOSTNAME}_#{app.environment}"
 set :root, File.expand_path('../', __FILE__)
 
 require 'logger'
@@ -27,8 +30,8 @@ else
 end
 ActiveRecord::Base.logger = LOGGER
 
-FROM_EMAIL = 'info@eloyendionnetrouwen.nl'
-SMTP_HELO = 'eloyendionnetrouwen.nl'
+FROM_EMAIL = "info@#{DOMAIN}"
+SMTP_HELO = DOMAIN
 SMTP_HOST = 'mail.authsmtp.com'
 SMTP_PORT = 2525
 SMTP_USER = 'bob'

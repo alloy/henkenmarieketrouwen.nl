@@ -5,6 +5,7 @@ require 'active_record'
 require 'sinatra/activerecord/rake'
 
 $:.unshift File.expand_path('../', __FILE__)
+require 'config'
 
 namespace :db do
   namespace :migrate do
@@ -21,7 +22,7 @@ namespace :db do
     [:test, :development, :production].each do |env|
       task env do
         ENV['RACK_ENV'] = env.to_s
-        sh "createdb -h localhost eloyendionnetrouwen_#{env} -E UTF8"
+        sh "createdb -h localhost #{HOSTNAME}_#{env} -E UTF8"
       end
     end
   end
@@ -29,7 +30,7 @@ namespace :db do
   namespace :recreate do
     [:test, :development, :production].each do |env|
       task env do
-        sh "dropdb eloyendionnetrouwen_#{env}"
+        sh "dropdb #{HOSTNAME}_#{env}"
         Rake::Task["db:create:#{env}"].invoke
         Rake::Task["db:migrate:#{env}"].invoke
       end
@@ -48,7 +49,7 @@ namespace :db do
         puts
         puts "Start by using either of these URLs:"
         tokens.each do |token|
-          puts "  http://eloyendionnetrouwen.local/#{token}"
+          puts "  http://localhost:4567/#{token}"
         end
       end
     end

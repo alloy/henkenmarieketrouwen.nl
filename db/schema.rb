@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20110422165624) do
+ActiveRecord::Schema.define(version: 20140706161200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,13 +21,17 @@ ActiveRecord::Schema.define(version: 20110422165624) do
     t.string  "token"
     t.string  "attendees"
     t.text    "note"
-    t.boolean "sent",              default: false
-    t.boolean "english",           default: false
-    t.boolean "confirmed",         default: false
-    t.boolean "attending_wedding", default: false
-    t.boolean "attending_party",   default: false
-    t.boolean "attending_dinner",  default: false
-    t.integer "vegetarians",       default: 0,     null: false
+    t.boolean "sent",                     default: false
+    t.boolean "english",                  default: false
+    t.boolean "confirmed",                default: false
+    t.boolean "attending_wedding",        default: false
+    t.boolean "attending_party",          default: false
+    t.boolean "attending_dinner",         default: false
+    t.integer "vegetarians",              default: 0,     null: false
+    t.boolean "all_festivities",          default: false
+    t.boolean "attending_brunch",         default: false
+    t.boolean "attending_party_on_day_1", default: false
+    t.boolean "attending_party_on_day_2", default: false
   end
 
 end

@@ -5,7 +5,6 @@ require 'active_record'
 require 'sinatra/activerecord/rake'
 
 $:.unshift File.expand_path('../', __FILE__)
-require 'config'
 
 namespace :db do
   namespace :migrate do
@@ -21,6 +20,9 @@ namespace :db do
   namespace :create do
     [:test, :development, :production].each do |env|
       task env do
+        ENV['SKIP_DB'] = '1'
+        require 'config'
+
         ENV['RACK_ENV'] = env.to_s
         sh "createdb -h localhost #{HOSTNAME}_#{env} -E UTF8"
       end
@@ -30,6 +32,7 @@ namespace :db do
   namespace :recreate do
     [:test, :development, :production].each do |env|
       task env do
+        require 'config'
         sh "dropdb #{HOSTNAME}_#{env}"
         Rake::Task["db:create:#{env}"].invoke
         Rake::Task["db:migrate:#{env}"].invoke

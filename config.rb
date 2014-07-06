@@ -15,12 +15,15 @@ else
   set :environment, :development
 end
 
+app = Sinatra::Application
+set :root, File.expand_path('../', __FILE__)
+
 HOSTNAME = 'henkenmarieketrouwen'
 DOMAIN = "#{HOSTNAME}.nl"
 
-app = Sinatra::Application
-set :database, ENV['DATABASE_URL'] || "postgres://localhost/#{HOSTNAME}_#{app.environment}"
-set :root, File.expand_path('../', __FILE__)
+unless ENV['SKIP_DB']
+  set :database, ENV['DATABASE_URL'] || "postgres://localhost/#{HOSTNAME}_#{app.environment}"
+end
 
 require 'logger'
 if app.environment == :production

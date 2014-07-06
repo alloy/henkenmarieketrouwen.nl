@@ -14,6 +14,26 @@ class Invitation < ActiveRecord::Base
   before_save :ensure_attending_party_if_attending_dinner
   before_create :set_token
 
+  after_initialize do |invitation|
+    if invitation.new_record?
+      if invitation.all_festivities?
+        self.attending_wedding = true
+        self.attending_dinner = true
+      end
+      self.attending_brunch = true
+      self.attending_party_on_day_1 = true
+      self.attending_party_on_day_2 = true
+    end
+  end
+
+  def all_festivities=(flag)
+    if new_record?
+      write_attribute(:all_festivities, flag)
+    else
+      raise "Not allowed to change all_festivities!"
+    end
+  end
+
   def email=(address)
     if address && address.strip.empty?
       address = nil
@@ -81,6 +101,18 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  def allowed_festivities
+    unless all_festivities?
+      if attending_wedding?
+        errors.add(:attending_wedding, "U bent niet uitgenodigd voor de bruiloft ceremonie.")
+      end
+      if attending_dinner?
+        errors.add(:attending_wedding, "U bent niet uitgenodigd voor het diner.")
+      end
+    end
+  end
+
+  validate :allowed_festivities
   validates_presence_of :attendees, :message => "De gastenlijst mag niet leeg zijn."
   validate :amount_of_vegetarians
   validates_email :email, :allow_nil => true, :message => "Het opgegeven email adres is niet valide."

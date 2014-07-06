@@ -42,9 +42,11 @@
                   <%# TODO add validation error if this is empty! %>
                   <label>
                     <h3>Wie komt?</h3>
-                    <%= textfield :attendees, "width:90%;" %>
+                    <% @invitation.attendees_list.each do |attendee| %>
+                      <%= checkbox_tag "attendees[#{attendee}]", attendee, true %>
+                      <br/>
+                    <% end %>
                   </label>
-                  <span class="small">Scheidt de namen met een komma.</span>
                   <br/>
 
                   <h3>Waar <%= address 'ben je', 'zijn jullie' %> bij aanwezig?</h3>

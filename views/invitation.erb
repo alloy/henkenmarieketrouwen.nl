@@ -19,12 +19,15 @@
             <hr class="right"/>
           </div>
 
-          <h2><%= to_sentence(@invitation.invitees_list) %>, <%= address 'kom je', 'komen jullie' %> ook?</h2>
+          <h2>Lieve <%= to_sentence(@invitation.invitees_list) %>,</h2>
           <hr/>
 
           <div id="content">
-            <p>Eloy en Dionne trouwen op 1 juni en zouden <%= address 'jou', 'jullie' %> er graag bij hebben!</p>
-            <p>Om het feest in goede banen te leiden is het belangrijk dat we <strong>uiterlijk</strong> 4 mei weten wie er komen en hoe laat.</p>
+            <p><%= address 'Kom jij', 'Komen jullie' %> de liefde met ons vieren? Graag vóór 1 augustus 2014 reageren.</p>
+
+            <%# TODO possibly only show if they have a +1. Marieke? %>
+            <p>Deze uitnodiging is voor jou persoonlijk! Wegens een <strong>zeer beperkte ruimte</strong> tijdens de ceremonie, kunnen wij helaas niet alle partners van hiervoor uitnodigen. Het goede nieuws is dat zij na negen uur meer dan welkom zijn om het feest mee te vieren!</p>
+
             <hr/>
 
             <p>
@@ -54,27 +57,24 @@
                   <h3>Waar <%= address 'ben je', 'zijn jullie' %> bij aanwezig?</h3>
                   <span class="small">Vink geen opties aan indien <%= address 'je niet kunt', 'jullie niet kunnen' %>.</span>
 
-                  <h4>Op TODO-DATE</h2>
+                  <h4>28 augustus</h2>
                   <% if @invitation.all_festivities? %>
-                    <%= checkbox :attending_wedding, 'Bij de bruiloft in de Ruigoord kerk om 00:00.' %>
+                    <%= checkbox :attending_wedding, 'Tijdens de ceremonie om 18:15 uur (verzamelen 17:45)' %>
                     <br/>
                     <div id="dinner">
-                      <%= checkbox :attending_dinner, 'Bij het diner in Ruigoord om 00:00.' %>
+                      <%= checkbox :attending_dinner, 'Tijdens buffet om 20:00 uur' %>
                       <label>Met <%= textfield :vegetarians, "width:16px;" %> vegetariërs.</label>
                     </div>
                   <% end %>
-                  <%= checkbox :attending_party_on_day_1, 'Bij het feest in Ruigoord vanaf 00:00.' %>
+                  <%= checkbox :attending_party_on_day_1, 'Tijdens het feest vanaf 21:00 uur' %>
                   <br/>
-                  <h4>Op TODO-DATE+1</h2>
+                  <h4>29 augustus</h2>
+                  <%= checkbox :attending_party_on_day_1, 'Programma vanaf 11:30' %>
                   <div id="brunch">
-                    <%= checkbox :attending_brunch, 'Bij de brunch in Ruigoord om 00:00.' %>
-                    <label>Met <%= textfield :vegetarians, "width:16px;" %> vegetariërs.</label>
+                    <%= checkbox :attending_brunch, 'Tijdens de brunch om 12:00 uur' %>
                   </div>
-                  <%= checkbox :attending_party_on_day_1, 'Bij het feest in Ruigoord vanaf 00:00.' %>
-                  <br/>
                   <br/>
 
-                  <p>Zodra er meer informatie beschikbaar is, zoals foto’s, dan laten we het weten via email.</p>
                   <label>
                     Email adres:<br/>
                     <%= textfield :email, "width:30%;" %>

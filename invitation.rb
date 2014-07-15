@@ -116,7 +116,17 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  def invited_attendees
+    invitees = invitees_list
+    attendees_list.each do |attendee|
+      unless invitees.include?(attendee)
+        errors.add(:base, "De volgende persoon is niet uitgenodigd: #{attendee}")
+      end
+    end
+  end
+
   validates_uniqueness_of :token
+  validate :invited_attendees
   validate :allowed_festivities
   validates_presence_of :attendees, :message => "De gastenlijst mag niet leeg zijn."
   validate :amount_of_vegetarians

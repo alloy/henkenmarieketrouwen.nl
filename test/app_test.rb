@@ -131,6 +131,7 @@ class InviteeTest < MiniTest::Spec
     assert last_response.body.include?('komen jullie')
     assert !last_response.body.include?('kom je')
     @invitation.send(:write_attribute, :invitees, 'Bassie')
+    @invitation.send(:write_attribute, :attendees, 'Bassie')
     @invitation.save
     get "/invitations/#{@invitation.token}"
     assert !last_response.body.include?('komen jullie')

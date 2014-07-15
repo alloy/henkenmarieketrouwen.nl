@@ -1,4 +1,12 @@
 module Helpers
+  def to_sentence(list)
+    if list.size == 1
+      list.first
+    else
+      "#{list[0..-2].join(", ")} en #{list.last}"
+    end
+  end
+
   def header_links
     %{<h1><a href="/">&larr; Henk &amp; Marieke trouwen!</a></h1>
       <ul>
@@ -9,7 +17,7 @@ module Helpers
   end
 
   def address(singular_form, plural_form, amount = nil)
-    amount ||= @invitation.attendees_list.size
+    amount ||= @invitation.invitees_list.size
     amount == 1 ? singular_form : plural_form
   end
 
@@ -25,22 +33,20 @@ module Helpers
     %{<input type="text" name="invitation[#{attr}]" value="#{@invitation.send(attr)}" #{'class="error"' if error} style="#{style}" />}
   end
 
-  def checkbox_tag(attr, label, checked)
-    %{<input type="hidden" name="invitation[#{attr}]" value="0" />
-      <label>
-        <input type="hidden" name="invitation[#{attr}]" value="0" />
-        <input type="checkbox" id="#{attr}_input" name="invitation[#{attr}]" value="1" #{'checked="checked"' if checked} />
+  def checkbox_tag(attr, label, value, checked)
+    %{<label>
+        <input type="checkbox" id="#{attr}_input" name="invitation[#{attr}]" value="#{value}" #{'checked="checked"' if checked} />
         #{label}
       </label>}
   end
 
   def checkbox(attr, label)
-    checkbox_tag(attr, label, @invitation.send(attr))
+    %{<input type="hidden" name="invitation[#{attr}]" value="0" />#{checkbox_tag(attr, label, '1', @invitation.send(attr))}}
   end
 
   def summary
     result = []
-    result << "#{@invitation.attendees_sentence}."
+    result << "#{to_sentence(@invitation.attendees_list)}."
     if @invitation.attending_wedding? && @invitation.attending_party?
       result << "#{address 'Is', 'Zijn'} aanwezig op de bruiloft om 13:30 en het feest vanaf 15:00."
     else

@@ -74,15 +74,6 @@ class Invitation < ActiveRecord::Base
     list(invitees)
   end
 
-  def attendees_sentence
-    list = attendees_list
-    if list.size == 1
-      list.first
-    else
-      list[0..-2].join(", ") << "#{english? ? ', and' : ' en'} #{list.last}"
-    end
-  end
-
   def attending?
     attending_wedding? || attending_party?
   end
@@ -125,6 +116,7 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  validates_uniqueness_of :token
   validate :allowed_festivities
   validates_presence_of :attendees, :message => "De gastenlijst mag niet leeg zijn."
   validate :amount_of_vegetarians

@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=550, maximum-scale=1.0"/>
-    <title><%= @invitation.attendees_sentence %>, <%= address 'kom je', 'komen jullie' %> ook op de bruiloft van Henk &amp; Marieke?</title>
+    <title><%= to_sentence(@invitation.invitees_list) %>, <%= address 'kom je', 'komen jullie' %> ook op de bruiloft van Henk &amp; Marieke?</title>
     <link rel="stylesheet" href="../../css/reset.css" type="text/css"/>
     <link rel="stylesheet" href="../../css/screen.css" type="text/css"/>
     <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="../../css/iphone.css" type="text/css"/>
@@ -19,7 +19,7 @@
             <hr class="right"/>
           </div>
 
-          <h2><%= @invitation.attendees_sentence %>, <%= address 'kom je', 'komen jullie' %> ook?</h2>
+          <h2><%= to_sentence(@invitation.invitees_list) %>, <%= address 'kom je', 'komen jullie' %> ook?</h2>
           <hr/>
 
           <div id="content">
@@ -43,8 +43,9 @@
                   <%# TODO add validation error if this is empty! %>
                   <label>
                     <h3>Wie komt?</h3>
-                    <% @invitation.attendees_list.each do |attendee| %>
-                      <%= checkbox_tag "attendees[#{attendee}]", attendee, true %>
+                    <% attendees = @invitation.attendees_list %>
+                    <% @invitation.invitees_list.each do |invitee| %>
+                      <%= checkbox_tag "attendees[]", invitee, invitee, attendees.include?(invitee) %>
                       <br/>
                     <% end %>
                   </label>

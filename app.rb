@@ -64,10 +64,6 @@ end
 post '/invitations/:token' do |token|
   if @invitation = Invitation.find_by_token(token)
     attrs = params[:invitation].dup
-    # TODO test this
-    attendees = attrs['attendees'].select { |_, attend| attend == '1' }.map(&:first).join(',')
-    attrs['attendees'] = attendees
-    LOGGER.info attrs.inspect
     if @invitation.update_attributes(attrs)
       if @invitation.confirmed?
         Mailer.send_confirmation(@invitation) if @invitation.email

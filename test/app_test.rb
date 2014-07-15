@@ -14,7 +14,7 @@ class InviteeTest < MiniTest::Spec
   end
 
   def setup
-    @invitation = Invitation.create(:attendees => 'Bassie, Adriaan', :email => 'bassie@caravan.es')
+    @invitation = Invitation.create(:invitees => 'Bassie, Adriaan', :email => 'bassie@caravan.es', :all_festivities => true)
   end
 
   it "is redirected to the actual invitation page" do
@@ -27,7 +27,8 @@ class InviteeTest < MiniTest::Spec
     get "/invitations/#{@invitation.token}"
     assert last_response.ok?
     assert_have_tag "form[@action=\"/invitations/#{@invitation.token}\"][@method=post]" do
-      assert_have_tag 'input[@name="invitation[attendees]"][@value="Bassie, Adriaan"]'
+      assert_have_tag 'input[@name="invitation[attendees[]]"][@value="Bassie"]'
+      assert_have_tag 'input[@name="invitation[attendees[]]"][@value="Adriaan"]'
       assert_have_tag 'input[@name="invitation[email]"][@value="bassie@caravan.es"]'
     end
   end
@@ -46,19 +47,19 @@ class InviteeTest < MiniTest::Spec
     assert @invitation.attending_wedding?
   end
 
-  it "confirms if they'll attend the party" do
-    update_invitation :attending_party => '0'
-    assert !@invitation.attending_party?
-    update_invitation :attending_party => '1'
-    assert @invitation.attending_party?
-  end
+  #it "confirms if they'll attend the party" do
+    #update_invitation :attending_party => '0'
+    #assert !@invitation.attending_party?
+    #update_invitation :attending_party => '1'
+    #assert @invitation.attending_party?
+  #end
 
-  it "confirms if they'll attend dinner" do
-    update_invitation :attending_dinner => '0'
-    assert !@invitation.attending_dinner?
-    update_invitation :attending_dinner => '1'
-    assert @invitation.attending_dinner?
-  end
+  #it "confirms if they'll attend dinner" do
+    #update_invitation :attending_dinner => '0'
+    #assert !@invitation.attending_dinner?
+    #update_invitation :attending_dinner => '1'
+    #assert @invitation.attending_dinner?
+  #end
 
   it "confirms how many vegetarians there are" do
     update_invitation :vegetarians => '0'
@@ -86,6 +87,10 @@ class InviteeTest < MiniTest::Spec
     end
   end
 
+  after do
+    Net::SMTP.sent_emails.clear
+  end
+
   it "confirms that they will come" do
     @invitation.update_attribute(:attending_wedding, true)
     update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
@@ -97,15 +102,15 @@ class InviteeTest < MiniTest::Spec
     assert emails[0].message.include?('Leuk')
   end
 
-  it "confirms that they will not come" do
-    update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
-    assert @invitation.confirmed?
-    emails = Net::SMTP.sent_emails
-    assert_equal 1, emails.size
-    assert_equal FROM_EMAIL, emails[0].from
-    assert_equal @invitation.email, emails[0].to
-    assert emails[0].message.include?('Jammer')
-  end
+  #it "confirms that they will not come" do
+    #update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
+    #assert @invitation.confirmed?
+    #emails = Net::SMTP.sent_emails
+    #assert_equal 1, emails.size
+    #assert_equal FROM_EMAIL, emails[0].from
+    #assert_equal @invitation.email, emails[0].to
+    #assert emails[0].message.include?('Jammer')
+  #end
 
   it "does not send a confirmation email if there is no address" do
     @invitation.update_attribute(:email, nil)
@@ -121,11 +126,12 @@ class InviteeTest < MiniTest::Spec
     assert_have_tag "form", :count => 0
   end
 
-  it "addresses the attendee or attendees in the proper way" do
+  it "addresses the invitee(s) in the proper way" do
     get "/invitations/#{@invitation.token}"
     assert last_response.body.include?('komen jullie')
     assert !last_response.body.include?('kom je')
-    @invitation.update_attribute(:attendees, 'Bassie')
+    @invitation.send(:write_attribute, :invitees, 'Bassie')
+    @invitation.save
     get "/invitations/#{@invitation.token}"
     assert !last_response.body.include?('komen jullie')
     assert last_response.body.include?('kom je')

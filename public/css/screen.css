@@ -8,7 +8,6 @@ html
 
 body
 {
-  background-attachment:fixed;
   background-color:#222;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -26,7 +25,6 @@ body
   -o-background-size:100% auto;
   -webkit-background-size:100% auto;
   background-image:url('/backgrounds/background.jpg');
-  background-attachment:fixed;
 }
 
 input

@@ -8,15 +8,25 @@ html
 
 body
 {
+  background-attachment:fixed;
+  background-color:#222;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#background
+{
+  z-index:-1;
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  background-size:100% auto;
   -moz-background-size:100% auto;
   -o-background-size:100% auto;
   -webkit-background-size:100% auto;
-  background-attachment:fixed;
-  background-color:#222;
-  background-position:center top;
-  background-size:100% auto;
   background-image:url('/backgrounds/background.jpg');
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-attachment:fixed;
 }
 
 input

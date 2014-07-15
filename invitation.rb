@@ -1,5 +1,5 @@
 require 'config'
-require 'helpers'
+require 'securerandom'
 require 'mailer'
 require 'validates_email_san'
 
@@ -16,6 +16,7 @@ class Invitation < ActiveRecord::Base
 
   after_initialize do |invitation|
     if invitation.new_record?
+      self.attendees = invitees
       if invitation.all_festivities?
         self.attending_wedding = true
         self.attending_dinner = true
@@ -57,8 +58,20 @@ class Invitation < ActiveRecord::Base
     write_attribute(:attendees, list(attendees).reject(&:empty?).join(", "))
   end
 
+  def invitees=(invitees)
+    if new_record?
+      write_attribute(:invitees, invitees.strip)
+    else
+      raise "Not allowed to change invitees!"
+    end
+  end
+
   def attendees_list
     list(attendees)
+  end
+
+  def invitees_list
+    list(invitees)
   end
 
   def attendees_sentence
@@ -90,7 +103,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def generate_token
-    [1,2].map { |i| [1,2].map { (i.odd? ? ('a'..'z') : ('0'..'9')).to_a.random_element }.join }.join
+    SecureRandom.hex(6)
   end
 
   def amount_of_vegetarians

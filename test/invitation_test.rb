@@ -2,7 +2,7 @@ require File.expand_path('../test_helper', __FILE__)
 
 class InvitationInGeneralTest < MiniTest::Spec
   def setup
-    @invitation = Invitation.new(:attendees => 'Bassie, Adriaan', :email => 'bassie@caravan.es')
+    @invitation = Invitation.new(:invitees => 'Bassie, Adriaan', :email => 'bassie@caravan.es')
   end
 
   it "is not allowed to make any changes to all_festivities" do
@@ -12,11 +12,32 @@ class InvitationInGeneralTest < MiniTest::Spec
       @invitation.all_festivities = true
     end
   end
+
+  it "is not allowed to make any changes to invitees" do
+    @invitation.save
+    assert_raises RuntimeError do
+      @invitation.invitees = 'Bassie, Adriaan, Robin'
+    end
+  end
+
+  it "returns a list of invitees" do
+    assert_equal %w{ Bassie Adriaan }, @invitation.invitees_list
+  end
+
+  it "automatically sets the attendees" do
+    assert_equal @invitation.invitees_list, @invitation.attendees_list
+  end
+
+  it "does not change the invitees when changing the attendees" do
+    @invitation.attendees = 'Adriaan'
+    assert_equal %w{ Adriaan }, @invitation.attendees_list
+    assert_equal %w{ Bassie Adriaan }, @invitation.invitees_list
+  end
 end
 
 class InvitationForAllFestivitiesTest < MiniTest::Spec
   def setup
-    @invitation = Invitation.new(:attendees => 'Bassie, Adriaan', :email => 'bassie@caravan.es', :all_festivities => true)
+    @invitation = Invitation.new(:invitees => 'Bassie, Adriaan', :email => 'bassie@caravan.es', :all_festivities => true)
   end
 
   it "defaults to attending the wedding" do
@@ -42,7 +63,7 @@ end
 
 class InvitationForPartiesOnlyTest < MiniTest::Spec
   def setup
-    @invitation = Invitation.new(:attendees => 'Bassie, Adriaan', :email => 'bassie@caravan.es', :all_festivities => false)
+    @invitation = Invitation.new(:invitees => 'Bassie, Adriaan', :email => 'bassie@caravan.es', :all_festivities => false)
   end
 
   it "is set to not attend the wedding" do
@@ -78,7 +99,7 @@ end
 
 #class InvitationInGeneralTest < MiniTest::Spec
   #def setup
-    #@invitation = Invitation.new(:attendees => 'Bassie, Adriaan', :email => 'bassie@caravan.es')
+    #@invitation = Invitation.new(:invitees => 'Bassie, Adriaan', :email => 'bassie@caravan.es')
   #end
 
   #it "is invalid without any attendees" do

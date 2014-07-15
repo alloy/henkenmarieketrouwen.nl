@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706161200) do
+ActiveRecord::Schema.define(version: 20140715183100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20140706161200) do
     t.boolean "attending_brunch",         default: false
     t.boolean "attending_party_on_day_1", default: false
     t.boolean "attending_party_on_day_2", default: false
+    t.string  "invitees",                                 null: false
   end
 
 end

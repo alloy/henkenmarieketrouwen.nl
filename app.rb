@@ -3,6 +3,8 @@ require 'invitation'
 require 'helpers'
 require 'mailer'
 
+require "sinatra/reloader" if development?
+
 helpers do
   include Helpers
 end

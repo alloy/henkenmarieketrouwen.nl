@@ -13,7 +13,7 @@ module Helpers
   def header_links
     %{<h1><a href="/">&larr; Henk &amp; Marieke trouwen!</a></h1>
       <ul>
-        <li><a href="/present">Kado</a></li>
+        <li><a href="/present">Cadeau</a></li>
         <li><a href="/contact">Contact</a></li>
       </ul>}
   end

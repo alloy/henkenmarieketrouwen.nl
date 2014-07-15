@@ -27,16 +27,16 @@ class InviteeTest < MiniTest::Spec
     get "/invitations/#{@invitation.token}"
     assert last_response.ok?
     assert_have_tag "form[@action=\"/invitations/#{@invitation.token}\"][@method=post]" do
-      assert_have_tag 'input[@name="invitation[attendees[]]"][@value="Bassie"]'
-      assert_have_tag 'input[@name="invitation[attendees[]]"][@value="Adriaan"]'
+      assert_have_tag 'input[@name="invitation[attendees][]"][@value="Bassie"]'
+      assert_have_tag 'input[@name="invitation[attendees][]"][@value="Adriaan"]'
       assert_have_tag 'input[@name="invitation[email]"][@value="bassie@caravan.es"]'
     end
   end
 
   it "confirms who will be attending" do
-    update_invitation :attendees => 'Bassie, Adriaan'
+    update_invitation :attendees => %w{ Bassie Adriaan }
     assert_equal %w{ Bassie Adriaan }, @invitation.attendees_list
-    update_invitation :attendees => 'Bassie'
+    update_invitation :attendees => %w{ Bassie }
     assert_equal %w{ Bassie }, @invitation.attendees_list
   end
 
@@ -69,7 +69,7 @@ class InviteeTest < MiniTest::Spec
   end
 
   it "shows the form with validation errors" do
-    post "/invitations/#{@invitation.token}", :invitation => { :attendees => '', :vegetarians => 3 }
+    post "/invitations/#{@invitation.token}", :invitation => { :attendees => nil, :vegetarians => 3 }
     assert last_response.ok?
     assert_have_tag 'li', :content => "De gastenlijst mag niet leeg zijn."
     assert_have_tag 'li', :content => "Er kunnen niet meer vegetariërs (3) dan gasten (0) zijn."
@@ -159,6 +159,7 @@ class InviteeTest < MiniTest::Spec
   private
 
   def update_invitation(invitation_attributes, redirect_to = nil)
+    invitation_attributes[:attendees] = @invitation.attendees_list unless invitation_attributes[:attendees]
     post "/invitations/#{@invitation.token}", :invitation => invitation_attributes
     assert last_response.redirect?
     assert_equal(redirect_to || "http://example.org/invitations/#{@invitation.token}/confirm", last_response.headers['Location'])

@@ -33,15 +33,15 @@ module Helpers
     %{<input type="text" name="invitation[#{attr}]" value="#{@invitation.send(attr)}" #{'class="error"' if error} style="#{style}" />}
   end
 
-  def checkbox_tag(attr, label, value, checked)
+  def checkbox_tag(name, label, value, checked)
     %{<label>
-        <input type="checkbox" id="#{attr}_input" name="invitation[#{attr}]" value="#{value}" #{'checked="checked"' if checked} />
+        <input type="checkbox" name="#{name}" value="#{value}" #{'checked="checked"' if checked} />
         #{label}
       </label>}
   end
 
   def checkbox(attr, label)
-    %{<input type="hidden" name="invitation[#{attr}]" value="0" />#{checkbox_tag(attr, label, '1', @invitation.send(attr))}}
+    %{<input type="hidden" name="invitation[#{attr}]" value="0" />#{checkbox_tag("invitation[#{attr}]", label, '1', @invitation.send(attr))}}
   end
 
   def summary

@@ -45,7 +45,7 @@
                     <h3>Wie komt?</h3>
                     <% attendees = @invitation.attendees_list %>
                     <% @invitation.invitees_list.each do |invitee| %>
-                      <%= checkbox_tag "attendees[]", invitee, invitee, attendees.include?(invitee) %>
+                      <%= checkbox_tag "invitation[attendees][]", invitee, invitee, attendees.include?(invitee) %>
                       <br/>
                     <% end %>
                   </label>

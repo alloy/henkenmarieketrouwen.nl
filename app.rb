@@ -64,6 +64,11 @@ end
 post '/invitations/:token' do |token|
   if @invitation = Invitation.find_by_token(token)
     attrs = params[:invitation].dup
+    if attendees = attrs['attendees']
+      attrs['attendees'] = attendees.join(',')
+    else
+      attrs['attendees'] = ''
+    end
     if @invitation.update_attributes(attrs)
       if @invitation.confirmed?
         Mailer.send_confirmation(@invitation) if @invitation.email

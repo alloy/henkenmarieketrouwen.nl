@@ -13,7 +13,7 @@ body
   -webkit-background-size:100% auto;
   background-attachment:fixed;
   background-color:#222;
-  background-position:center;
+  background-position:center top;
   background-size:100% auto;
   background-image:url('/backgrounds/background.jpg');
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -88,6 +88,7 @@ div#container
   line-height:150%;
   opacity:0.85;
   width:450px;
+  margin-top:180px;
   padding:20px;
   text-shadow:0 1px 0 #fff;
   position:relative;

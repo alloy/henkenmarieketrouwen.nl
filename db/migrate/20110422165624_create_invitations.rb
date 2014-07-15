@@ -1,9 +1,9 @@
 class CreateInvitations < ActiveRecord::Migration
   def self.up
     create_table :invitations do |t|
-      t.string :email
-      t.string :token
-      t.string :attendees
+      t.string :email, :null => false
+      t.string :token, :null => false
+      t.string :attendees, :null => false
       t.text   :note
       t.boolean :sent, :default => false
       t.boolean :english, :default => false

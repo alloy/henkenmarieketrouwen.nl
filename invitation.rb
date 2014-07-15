@@ -17,13 +17,6 @@ class Invitation < ActiveRecord::Base
   after_initialize do |invitation|
     if invitation.new_record?
       self.attendees = invitees
-      if invitation.all_festivities?
-        self.attending_wedding = true
-        self.attending_dinner = true
-      end
-      self.attending_brunch = true
-      self.attending_party_on_day_1 = true
-      self.attending_party_on_day_2 = true
     end
   end
 

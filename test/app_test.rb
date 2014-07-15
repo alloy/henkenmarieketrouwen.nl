@@ -102,15 +102,15 @@ class InviteeTest < MiniTest::Spec
     assert emails[0].message.include?('Leuk')
   end
 
-  #it "confirms that they will not come" do
-    #update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
-    #assert @invitation.confirmed?
-    #emails = Net::SMTP.sent_emails
-    #assert_equal 1, emails.size
-    #assert_equal FROM_EMAIL, emails[0].from
-    #assert_equal @invitation.email, emails[0].to
-    #assert emails[0].message.include?('Jammer')
-  #end
+  it "confirms that they will not come" do
+    update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
+    assert @invitation.confirmed?
+    emails = Net::SMTP.sent_emails
+    assert_equal 1, emails.size
+    assert_equal FROM_EMAIL, emails[0].from
+    assert_equal @invitation.email, emails[0].to
+    assert emails[0].message.include?('Jammer')
+  end
 
   it "does not send a confirmation email if there is no address" do
     @invitation.update_attribute(:email, nil)

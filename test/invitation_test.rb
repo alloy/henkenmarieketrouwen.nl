@@ -39,26 +39,6 @@ class InvitationForAllFestivitiesTest < MiniTest::Spec
   def setup
     @invitation = Invitation.new(:invitees => 'Bassie, Adriaan', :email => 'bassie@caravan.es', :all_festivities => true)
   end
-
-  it "defaults to attending the wedding" do
-    assert @invitation.attending_wedding?
-  end
-
-  it "defaults to attending the dinner" do
-    assert @invitation.attending_dinner?
-  end
-
-  it "defaults to attending the party on day 1" do
-    assert @invitation.attending_party_on_day_1?
-  end
-
-  it "defaults to attending the brunch on day 2" do
-    assert @invitation.attending_brunch?
-  end
-
-  it "defaults to attending the party on day 2" do
-    assert @invitation.attending_party_on_day_2?
-  end
 end
 
 class InvitationForPartiesOnlyTest < MiniTest::Spec
@@ -82,18 +62,6 @@ class InvitationForPartiesOnlyTest < MiniTest::Spec
   it "is invalid with attending the dinner set to true" do
     @invitation.attending_dinner = true
     assert !@invitation.valid?
-  end
-
-  it "defaults to attending the party on day 1" do
-    assert @invitation.attending_party_on_day_1?
-  end
-
-  it "defaults to attending the brunch on day 2" do
-    assert @invitation.attending_brunch?
-  end
-
-  it "defaults to attending the party on day 2" do
-    assert @invitation.attending_party_on_day_2?
   end
 end
 

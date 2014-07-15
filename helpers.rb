@@ -1,15 +1,4 @@
-class Array
-  def random_element
-    self[Kernel.rand(length)]
-  end
-end
-
 module Helpers
-  def body_tag
-    background = Dir.glob(File.join(settings.public_folder, 'backgrounds/*.jpg')).map { |f| File.basename(f) }.random_element
-    %{<body style="background-image:url('/backgrounds/#{background}');">}
-  end
-
   def header_links
     %{<h1><a href="/">&larr; Henk &amp; Marieke trouwen!</a></h1>
       <ul>

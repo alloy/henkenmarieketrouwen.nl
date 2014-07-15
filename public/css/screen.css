@@ -15,6 +15,7 @@ body
   background-color:#222;
   background-position:center;
   background-size:100% auto;
+  background-image:url('/backgrounds/background.jpg');
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 

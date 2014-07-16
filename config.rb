@@ -34,9 +34,9 @@ end
 ActiveRecord::Base.logger = LOGGER
 
 FROM_EMAIL = "info@#{DOMAIN}"
-SMTP_HELO = DOMAIN
-SMTP_HOST = 'mail.authsmtp.com'
-SMTP_PORT = 2525
-SMTP_USER = 'bob'
-SMTP_PASS = 'secret'
-
+SMTP_HELO = 'heroku.com'
+SMTP_HOST = 'smtp.sendgrid.net'
+SMTP_PORT = 587
+SMTP_USER = ENV['SENDGRID_USERNAME']
+SMTP_PASS = ENV['SENDGRID_PASSWORD']
+SMTP_AUTH = :plain

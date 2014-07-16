@@ -91,7 +91,8 @@ END_OF_MESSAGE
       yield smtp
     else
       require 'net/smtp'
-      Net::SMTP.start(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_USER, SMTP_PASS, :cram_md5) do |smtp|
+      Net::SMTP.start(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_USER, SMTP_PASS, SMTP_AUTH) do |smtp|
+        smtp.enable_tls
         yield smtp
       end
     end

@@ -47,9 +47,9 @@ namespace :db do
       task env do
         require 'app'
         tokens = []
-        tokens << Invitation.create(:invitees => 'Ernie', :email => 'ernie@example.org', :all_festivities => true, :has_post_ceremony_plus_one => true).token
-        tokens << Invitation.create(:invitees => 'Bassie, Adriaan', :email => 'bassie@example.org', :all_festivities => true).token
-        tokens << Invitation.create(:invitees => 'Rini, Sander, Mats, Mila, Nena, Jacky, Yuka', :email => 'rini@example.org', :all_festivities => false).token
+        tokens << Invitation.create(:invitees => 'Ernie', :email => ENV['EMAIL'] || 'ernie@example.org', :all_festivities => true, :has_post_ceremony_plus_one => true).token
+        tokens << Invitation.create(:invitees => 'Bassie, Adriaan', :email => ENV['EMAIL'] || 'bassie@example.org', :all_festivities => true).token
+        tokens << Invitation.create(:invitees => 'Rini, Sander, Mats, Mila, Nena, Jacky, Yuka', :email => ENV['EMAIL'] || 'rini@example.org', :all_festivities => false).token
         puts
         puts "Start by using either of these URLs:"
         tokens.each do |token|

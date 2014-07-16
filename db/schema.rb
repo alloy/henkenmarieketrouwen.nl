@@ -17,9 +17,9 @@ ActiveRecord::Schema.define(version: 20140716120500) do
   enable_extension "plpgsql"
 
   create_table "invitations", force: true do |t|
-    t.string  "email"
-    t.string  "token"
-    t.string  "attendees"
+    t.string  "email",                                      null: false
+    t.string  "token",                                      null: false
+    t.string  "attendees",                                  null: false
     t.text    "note"
     t.boolean "sent",                       default: false
     t.boolean "confirmed",                  default: false

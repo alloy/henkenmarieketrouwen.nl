@@ -33,6 +33,9 @@ module Net
       def send_message(message, from, to)
         sent_emails << Email.new(message, from, to)
       end
+
+      def enable_tls
+      end
     end
 
     class << self

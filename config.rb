@@ -18,6 +18,10 @@ end
 app = Sinatra::Application
 set :root, File.expand_path('../', __FILE__)
 
+unless app.environment == :production
+  ENV['MANAGE_SECRET'] = 'secret'
+end
+
 HOSTNAME = 'henkenmarieketrouwen'
 DOMAIN = "#{HOSTNAME}.nl"
 

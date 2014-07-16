@@ -41,6 +41,11 @@ get '/present' do
   erb :present
 end
 
+get "/manage/#{ENV['MANAGE_SECRET']}" do
+  @invitations =Invitation.all
+  erb :manage
+end
+
 get '/:invitation_token' do |token|
   redirect to("/invitations/#{token}")
 end

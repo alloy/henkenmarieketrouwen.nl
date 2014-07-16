@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<style type="text/css">
+table, th, td
+{
+  border: 1px solid black;
+}
+th.small, td.small
+{
+  width:80px;
+  text-align:center;
+}
+th.not-invited, td.not-invited
+{
+  background-color:gray;
+}
+</style>
+</head>
+<body>
+  <table>
+    <tr>
+      <th>Namen</th>
+      <th>E-mailadres</th>
+      <th class="small">Ingediend</th>
+      <th class="small">Ceremonie</th>
+      <th class="small">Buffet</th>
+      <th class="small">Feest</th>
+      <th class="small">Brunch</th>
+      <th class="small">Programma</th>
+      <th class="small">Aantal aanwezig</th>
+      <th class="small">Aantal vegetariërs</th>
+      <th>Opmerking</th>
+    </tr>
+    <% @invitations.each do |invitation| %>
+      <tr>
+        <td><a href="/invitations/<%= invitation.token %>"><%= invitation.invitees %></a></td>
+        <td><%= invitation.email %></td>
+        <td class="small"><%= 'X' if invitation.confirmed? %></td>
+        <td class="small<%= ' not-invited' unless invitation.all_festivities? %>"><%= 'X' if invitation.attending_wedding? %></td>
+        <td class="small<%= ' not-invited' unless invitation.all_festivities? %>"><%= 'X' if invitation.attending_dinner? %></td>
+        <td class="small"><%= 'X' if invitation.attending_party_on_day_1? %></td>
+        <td class="small"><%= 'X' if invitation.attending_brunch? %></td>
+        <td class="small"><%= 'X' if invitation.attending_party_on_day_2? %></td>
+        <td class="small"><%= invitation.attendees_list.size if invitation.confirmed? && invitation.attending? %></td>
+        <td class="small<%= ' not-invited' unless invitation.all_festivities? %>"><%= invitation.vegetarians if invitation.all_festivities? && invitation.confirmed? && invitation.attending? %></td>
+        <td><%= invitation.note %></td>
+      </tr>
+    <% end %>
+  </table>
+</body>
+</html>

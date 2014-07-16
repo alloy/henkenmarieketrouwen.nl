@@ -21,7 +21,7 @@ From: <#{FROM_EMAIL}>
 To: <#{@invitation.email}>
 Subject: Eloy en Dionne trouwen! #{address 'Kom je', 'Komen jullie'} ook?
 
-Hoi #{@invitation.attendees_sentence},
+Hoi #{to_sentence(@invitation.attendees_list)},
 
 Eloy en Dionne trouwen op 1 juni en zouden #{address 'jou', 'jullie'} er graag bij hebben!
 Indien #{address 'je komt', 'jullie komen'}, laat dat dan *uiterlijk* 4 mei weten via onderstaande link:

@@ -20,6 +20,13 @@ class InvitationInGeneralTest < MiniTest::Spec
     end
   end
 
+  it "is not allowed to make any changes to has_post_ceremony_plus_one" do
+    @invitation.save
+    assert_raises RuntimeError do
+      @invitation.has_post_ceremony_plus_one = true
+    end
+  end
+
   it "returns a list of invitees" do
     assert_equal %w{ Bassie Adriaan }, @invitation.invitees_list
   end

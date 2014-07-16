@@ -47,6 +47,7 @@ namespace :db do
       task env do
         require 'app'
         tokens = []
+        tokens << Invitation.create(:invitees => 'Ernie', :email => 'ernie@example.org', :all_festivities => true, :has_post_ceremony_plus_one => true).token
         tokens << Invitation.create(:invitees => 'Bassie, Adriaan', :email => 'bassie@example.org', :all_festivities => true).token
         tokens << Invitation.create(:invitees => 'Rini, Sander, Mats, Mila, Nena, Jacky, Yuka', :email => 'rini@example.org', :all_festivities => false).token
         puts

@@ -28,6 +28,14 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  def has_post_ceremony_plus_one=(flag)
+    if new_record?
+      write_attribute(:has_post_ceremony_plus_one, flag)
+    else
+      raise "Not allowed to change has_post_ceremony_plus_one!"
+    end
+  end
+
   def email=(address)
     if address && address.strip.empty?
       address = nil

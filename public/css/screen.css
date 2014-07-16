@@ -24,7 +24,7 @@ body
   -moz-background-size:100% auto;
   -o-background-size:100% auto;
   -webkit-background-size:100% auto;
-  background-image:url('/backgrounds/background.jpg');
+  background-image:url('/backgrounds/large.jpg');
 }
 
 input

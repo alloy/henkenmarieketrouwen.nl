@@ -11,7 +11,6 @@ class Invitation < ActiveRecord::Base
     end
   end
 
-  before_save :ensure_attending_party_if_attending_dinner
   before_create :set_token
 
   after_initialize do |invitation|
@@ -51,10 +50,6 @@ class Invitation < ActiveRecord::Base
     attendees_list.size - vegetarians
   end
 
-  def ensure_attending_party_if_attending_dinner
-    self.attending_party = true if attending_dinner?
-  end
-
   def attendees=(attendees)
     write_attribute(:attendees, list(attendees).reject(&:empty?).join(", "))
   end
@@ -76,7 +71,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def attending?
-    attending_wedding? || attending_party?
+    !attendees_list.empty? && (attending_wedding? || attending_dinner? || attending_party_on_day_1? || attending_brunch? || attending_party_on_day_2?)
   end
 
   private
@@ -109,10 +104,10 @@ class Invitation < ActiveRecord::Base
   def allowed_festivities
     unless all_festivities?
       if attending_wedding?
-        errors.add(:attending_wedding, "U bent niet uitgenodigd voor de bruiloft ceremonie.")
+        errors.add(:attending_wedding, "U bent niet uitgenodigd voor de ceremonie.")
       end
       if attending_dinner?
-        errors.add(:attending_wedding, "U bent niet uitgenodigd voor het diner.")
+        errors.add(:attending_dinner, "U bent niet uitgenodigd voor het buffet.")
       end
     end
   end
@@ -129,7 +124,6 @@ class Invitation < ActiveRecord::Base
   validates_uniqueness_of :token
   validate :invited_attendees
   validate :allowed_festivities
-  validates_presence_of :attendees, :message => "De gastenlijst mag niet leeg zijn."
   validate :amount_of_vegetarians
   validates_email :email, :allow_nil => true, :message => "Het opgegeven email adres is niet valide."
 end

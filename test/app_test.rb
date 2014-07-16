@@ -71,7 +71,6 @@ class InviteeTest < MiniTest::Spec
   it "shows the form with validation errors" do
     post "/invitations/#{@invitation.token}", :invitation => { :attendees => nil, :vegetarians => 3 }
     assert last_response.ok?
-    assert_have_tag 'li', :content => "De gastenlijst mag niet leeg zijn."
     assert_have_tag 'li', :content => "Er kunnen niet meer vegetariërs (3) dan gasten (0) zijn."
     assert_have_tag "form[@action=\"/invitations/#{@invitation.token}\"][@method=post]" do
       assert_have_tag 'input[@name="invitation[vegetarians]"][@value="3"]'

@@ -47,21 +47,35 @@ module Helpers
   def summary
     result = []
     result << "#{to_sentence(@invitation.attendees_list)}."
-    if @invitation.attending_wedding? && @invitation.attending_party?
-      result << "#{address 'Is', 'Zijn'} aanwezig op de bruiloft om 13:30 en het feest vanaf 15:00."
+
+    day_1 = []
+    day_1 << 'de ceremonie om 18:30 uur' if @invitation.attending_wedding?
+    day_1 << 'buffet om 20:00 uur' if @invitation.attending_dinner?
+    day_1 << 'het feest vanaf 21:00 uur' if @invitation.attending_party_on_day_1?
+    if day_1.empty?
+      result << "#{address 'Is', 'Zijn'} niet aanwezig op 28 augustus."
     else
-      result << "#{address 'Is', 'Zijn'} alleen aanwezig op #{@invitation.attending_wedding? ? 'de bruiloft om 13:30' : 'het feest vanaf 15:00'}."
+      result << "#{address 'Is', 'Zijn'} aanwezig op 28 augustus tijdens #{to_sentence(day_1)}."
     end
+
+    day_2 = []
+    day_2 << 'programma vanaf 11:30 uur' if @invitation.attending_party_on_day_2?
+    day_2 << 'de brunch om 12:00 uur' if @invitation.attending_brunch?
+    if day_2.empty?
+      result << "#{address 'Is', 'Zijn'} niet aanwezig op 29 augustus."
+    else
+      result << "#{address 'Is', 'Zijn'} aanwezig op 29 augustus tijdens #{to_sentence(day_2)}."
+    end
+
     if @invitation.attending_dinner?
       if (omnivores = @invitation.omnivores) > 0
-        result << "#{omnivores} #{address 'persoon maakt', "personen maken", omnivores} gebruik van de vlees BBQ."
+        result << "#{omnivores} #{address 'persoon eet', "personen eten", omnivores} vlees."
       end
       if (vegetarians = @invitation.vegetarians) > 0
-        result << "#{vegetarians} #{address 'persoon maakt', "personen maken", vegetarians} gebruik van de vegetarische BBQ."
+        result << "#{vegetarians} #{address 'persoon is', "personen zijn", vegetarians} #{address 'vegetariër', 'vegetariërs', vegetarians}."
       end
-    else
-      result << "#{address 'Je maakt', 'Jullie maken'} geen gebruik van de BBQ."
     end
+
     if @invitation.note.present?
       result << "Opmerking: #{@invitation.note}"
     end

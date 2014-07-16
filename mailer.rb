@@ -83,8 +83,16 @@ END_OF_MESSAGE
   end
 
   def self.connection
-    require 'net/smtp'
-    Net::SMTP.start(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_USER, SMTP_PASS, :cram_md5) do |smtp|
+    if ENV['RACK_ENV'] == 'production'
+      require 'net/smtp'
+      Net::SMTP.start(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_USER, SMTP_PASS, :cram_md5) do |smtp|
+        yield smtp
+      end
+    else
+      smtp = Object.new
+      def smtp.send_message(message, from, to)
+        ActiveRecord::Base.logger.info(message.to_s)
+      end
       yield smtp
     end
   end
@@ -93,7 +101,7 @@ END_OF_MESSAGE
     connection do |smtp|
       invitations.each do |invitation|
         message = Message::Invitation.new(invitation).to_s
-        ActiveRecord::Base.logger.info(message)
+        ActiveRecord::Base.logger.info("Sending invitation to: #{invitation.email}")
         smtp.send_message(message, FROM_EMAIL, invitation.email)
         yield invitation
       end
@@ -103,7 +111,7 @@ END_OF_MESSAGE
   def self.send_confirmation(invitation)
     connection do |smtp|
       message = Message::Confirmation.new(invitation).to_s
-      ActiveRecord::Base.logger.info(message)
+      ActiveRecord::Base.logger.info("Sending confirmation to: #{invitation.email}")
       smtp.send_message(message, FROM_EMAIL, invitation.email)
     end
   end

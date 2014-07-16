@@ -12,7 +12,7 @@ module Mailer
 
     class Invitation < Message
       def to_s
-        @invitation.english? ? english : dutch
+        dutch
       end
 
       def dutch
@@ -29,26 +29,6 @@ Indien #{address 'je komt', 'jullie komen'}, laat dat dan *uiterlijk* 4 mei wete
 http://www.#{DOMAIN}/#{@invitation.token}
 
 Hopelijk tot dan!
-END_OF_MESSAGE
-      end
-
-      def english
-<<END_OF_MESSAGE
-From: <#{FROM_EMAIL}>
-To: <#{@invitation.email}>
-Subject: Eloy and Dionne are getting married! Will you join us?
-
-Hi #{@invitation.attendees_sentence},
-
-Eloy and Dionne are getting married on june the 1st and would love to have you join us!
-
-Reply to this email *before* May the 5th, in case you would like to come over, and provide the following details:
-* Who? #{@invitation.attendees_sentence}.
-* Will you attend the wedding ceremony at 13:30?
-* Will you attend the party starting at 15:00?
-* Will you attend the BBQ at 18:00 and would you prefer vegetarian?
-
-Hope to see you there!
 END_OF_MESSAGE
       end
     end

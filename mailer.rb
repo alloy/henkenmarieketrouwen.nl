@@ -83,17 +83,17 @@ END_OF_MESSAGE
   end
 
   def self.connection
-    if ENV['RACK_ENV'] == 'production'
-      require 'net/smtp'
-      Net::SMTP.start(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_USER, SMTP_PASS, :cram_md5) do |smtp|
-        yield smtp
-      end
-    else
+    if ENV['RACK_ENV'] == 'development'
       smtp = Object.new
       def smtp.send_message(message, from, to)
         ActiveRecord::Base.logger.info(message.to_s)
       end
       yield smtp
+    else
+      require 'net/smtp'
+      Net::SMTP.start(SMTP_HOST, SMTP_PORT, SMTP_HELO, SMTP_USER, SMTP_PASS, :cram_md5) do |smtp|
+        yield smtp
+      end
     end
   end
 

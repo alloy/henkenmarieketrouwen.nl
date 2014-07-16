@@ -62,9 +62,9 @@ class InviteeTest < MiniTest::Spec
   #end
 
   it "confirms how many vegetarians there are" do
-    update_invitation :vegetarians => '0'
+    update_invitation :vegetarians => '0', :confirmed => '0'
     assert_equal 0, @invitation.vegetarians
-    update_invitation :vegetarians => '2'
+    update_invitation :vegetarians => '2', :confirmed => '0'
     assert_equal 2, @invitation.vegetarians
   end
 
@@ -92,7 +92,7 @@ class InviteeTest < MiniTest::Spec
 
   it "confirms that they will come" do
     @invitation.update_attribute(:attending_wedding, true)
-    update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
+    update_invitation({ :confirmed => '1' })
     assert @invitation.confirmed?
     emails = Net::SMTP.sent_emails
     assert_equal 1, emails.size
@@ -102,7 +102,7 @@ class InviteeTest < MiniTest::Spec
   end
 
   it "confirms that they will not come" do
-    update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
+    update_invitation({ :confirmed => '1' })
     assert @invitation.confirmed?
     emails = Net::SMTP.sent_emails
     assert_equal 1, emails.size
@@ -113,17 +113,17 @@ class InviteeTest < MiniTest::Spec
 
   it "does not send a confirmation email if there is no address" do
     @invitation.update_attribute(:email, nil)
-    update_invitation({ :confirmed => '1' }, "http://example.org/invitations/#{@invitation.token}")
+    update_invitation({ :confirmed => '1' })
     assert @invitation.confirmed?
     assert Net::SMTP.sent_emails.empty?
   end
 
-  it "shows a confirmed invitation page" do
-    @invitation.update_attribute(:confirmed, true)
-    get "/invitations/#{@invitation.token}"
-    assert last_response.ok?
-    assert_have_tag "form", :count => 0
-  end
+  #it "shows a confirmed invitation page" do
+    #@invitation.update_attribute(:confirmed, true)
+    #get "/invitations/#{@invitation.token}"
+    #assert last_response.ok?
+    #assert_have_tag "form", :count => 0
+  #end
 
   it "addresses the invitee(s) in the proper way" do
     get "/invitations/#{@invitation.token}"
@@ -159,7 +159,9 @@ class InviteeTest < MiniTest::Spec
   private
 
   def update_invitation(invitation_attributes, redirect_to = nil)
-    invitation_attributes[:attendees] = @invitation.attendees_list unless invitation_attributes[:attendees]
+    if invitation_attributes[:confirmed].nil? && invitation_attributes[:attendees].nil?
+      invitation_attributes[:attendees] = @invitation.attendees_list
+    end
     post "/invitations/#{@invitation.token}", :invitation => invitation_attributes
     assert last_response.redirect?
     assert_equal(redirect_to || "http://example.org/invitations/#{@invitation.token}/confirm", last_response.headers['Location'])

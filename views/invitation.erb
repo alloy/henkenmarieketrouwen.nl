@@ -26,7 +26,6 @@
             <p><%= address 'Kom jij', 'Komen jullie' %> de liefde met ons vieren? Graag vóór 1 augustus 2014 reageren.</p>
 
             <% if @invitation.all_festivities? && @invitation.has_post_ceremony_plus_one? %>
-              <%# TODO possibly only show if they have a +1. Marieke? %>
               <p>Deze uitnodiging is voor jou persoonlijk! Wegens <strong>zeer beperkte ruimte</strong> tijdens de ceremonie, kunnen wij helaas niet ieders partner hiervoor uitnodigen. Het goede nieuws is dat zij na negen uur meer dan welkom zijn om het feest mee te vieren!</p>
             <% end %>
 

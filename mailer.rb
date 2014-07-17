@@ -19,12 +19,12 @@ module Mailer
 <<END_OF_MESSAGE
 From: <#{FROM_EMAIL}>
 To: <#{@invitation.email}>
-Subject: Eloy en Dionne trouwen! #{address 'Kom je', 'Komen jullie'} ook?
+Subject: Henk en Marieke trouwen! #{address 'Kom jij', 'Komen jullie'} ook?
 
 Hoi #{to_sentence(@invitation.attendees_list)},
 
-Eloy en Dionne trouwen op 1 juni en zouden #{address 'jou', 'jullie'} er graag bij hebben!
-Indien #{address 'je komt', 'jullie komen'}, laat dat dan *uiterlijk* 4 mei weten via onderstaande link:
+Henk en Marieke trouwen op 28 augustus 2014 en zouden #{address 'jou', 'jullie'} er graag bij hebben!
+Indien #{address 'je komt', 'jullie komen'}, laat dat dan vóór 1 augustus 2014 weten via onderstaande link:
 
 http://www.#{DOMAIN}/#{@invitation.token}
 
@@ -44,9 +44,9 @@ END_OF_MESSAGE
 
       def body
         if @invitation.attending?
-          "De volgende gegevens zijn bij ons bekend:\n\n* #{summary.join("\n* ")}\n\nTot 1 juni!"
+          "De volgende gegevens zijn bij ons bekend:\n\n* #{summary.join("\n* ")}\n\nTot dan!"
         else
-          "Zodra er foto's beschikbaar zijn laten we het je nog weten."
+          "Zodra er foto's beschikbaar zijn laten we dat weten."
         end
       end
 
